@@ -61,7 +61,12 @@ public class TeamFightMatch extends Match implements ITeamFightMatch {
     @Override
     public void win(Participant winner) {
         setState(MatchState.ENDING);
-
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
+            if (command.equals("NONE"))
+                continue;
+            command = command.replace("<player>", winner.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
         new MatchEndRunnable(this).start(0L, 20L);
     }
 
@@ -71,6 +76,12 @@ public class TeamFightMatch extends Match implements ITeamFightMatch {
         MatchTeam winnerTeam = redTeam.isLoser() ? blueTeam : redTeam;
         MatchTeam loserTeam = getParticipantTeam(loser);
 
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
+            if (command.equals("NONE"))
+                continue;
+            command = command.replace("<player>", loser.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
 
         winnerTeam.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
                 CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
