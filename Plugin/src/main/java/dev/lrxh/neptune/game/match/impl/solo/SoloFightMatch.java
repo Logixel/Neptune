@@ -73,7 +73,7 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
         setState(MatchState.ENDING);
         loser.setLoser(true);
         Participant winner = getWinner();
-
+        
         winner.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
                 CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>",
                         MessagesLocale.MATCH_YOU.getString())),
@@ -85,6 +85,7 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
                             winner.getNameUnColored())),
                     100);
 
+        
         for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
             if (command.equals("NONE"))
                 continue;
