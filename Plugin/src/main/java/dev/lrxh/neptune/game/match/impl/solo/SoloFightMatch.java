@@ -85,21 +85,22 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
                             winner.getNameUnColored())),
                     100);
 
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
+            if (command.equals("NONE"))
+                continue;
+            command = command.replace("<player>", loser.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
+            if (command.equals("NONE"))
+                continue;
+            command = command.replace("<player>", winner.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+        
         if (!isDuel()) {
             addStats();
-            for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
-                if (command.equals("NONE"))
-                    continue;
-                command = command.replace("<player>", loser.getName());
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-            }
-
-            for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
-                if (command.equals("NONE"))
-                    continue;
-                command = command.replace("<player>", winner.getName());
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-            }
 
             forEachPlayer(player -> {
                 var activeEvent = EventService.get().getActiveEvent();
@@ -241,6 +242,20 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
                 ? participantB
                 : participantA;
         sendDeathMessage(participant);
+
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
+            if (command.equals("NONE"))
+                continue;
+            command = command.replace("<player>", participant.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
+            if (command.equals("NONE"))
+                continue;
+            command = command.replace("<player>", participantKiller.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
             if (getKit().is(KitRule.BED_WARS)) {
