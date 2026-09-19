@@ -74,6 +74,12 @@ public class FfaFightMatch extends Match implements IFffaFightMatch {
         incrementDeaths(participant);
         participant.setDead(true);
         participant.setLoser(true);
+        for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
+                if (command.equals("NONE"))
+                    continue;
+                command = command.replace("<player>", participant.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
         Profile profile = API.getProfile(participant.getPlayerUUID());
 
         if (!participant.isLeft() && !participant.isDisconnected()) {
