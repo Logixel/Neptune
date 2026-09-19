@@ -54,6 +54,11 @@ public class FfaFightMatch extends Match implements IFffaFightMatch {
             if (winner == null) return;
             participant.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
                     CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
+            for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
+                if (command.equals("NONE"))
+                    continue;
+                command = command.replace("<player>", winner.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         });
 
         loser.playKillEffect();
