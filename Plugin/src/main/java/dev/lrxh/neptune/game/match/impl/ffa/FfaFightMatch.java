@@ -59,6 +59,7 @@ public class FfaFightMatch extends Match implements IFffaFightMatch {
                     continue;
                 command = command.replace("<player>", winner.getName());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
         });
 
         loser.playKillEffect();
